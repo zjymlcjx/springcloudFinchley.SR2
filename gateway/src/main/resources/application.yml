@@ -1,0 +1,30 @@
+server:
+  port:  4000
+  
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:      discovery:        locator:          enabled: true  #开启服务发现的默认路由
+          
+---
+spring:   cloud:    gateway:      routes:      - id: springboot-service-discovery-client  
+        uri: lb:SPRINGBOOT-SERVICE
+        order: 0
+        predicates:        - Path=/springboot-service/**
+    
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+#    register-with-eureka: false
+#    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:2000/eureka/   #,http://localhost:3000/eureka/
+      
+logging:
+  level:
+    org.springframework.cloud.gateway: debug   
+    
+
