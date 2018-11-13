@@ -2,10 +2,6 @@
 server: 
   port: 1111
 spring: 
-  cloud:
-    refresh:
-      extra-refreshable:
-      - none
   application: 
     name: springboot-service
   jpa: 
@@ -80,8 +76,8 @@ logging:
 
 #logback日志参数
 logback:
-  path: C:/Users/Administrator/Desktop/test/logs
-  zip.path: C:/Users/Administrator/Desktop/test/logs/zip
+  path: ../logs
+  zip.path: ../logs/zip
   maxFileSize: 10MB
   maxHistory: 15
   totalSizeCap: 1000MB
