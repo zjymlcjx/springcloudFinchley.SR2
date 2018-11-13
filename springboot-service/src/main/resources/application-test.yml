@@ -1,0 +1,97 @@
+#本地开发环境
+server: 
+  port: 1111
+
+spring: 
+  application: 
+    name: springboot-service
+  jpa: 
+    show-sql: true
+  datasource: 
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2b8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 5
+  #redis默认配置
+  redis: 
+    database: 0
+    lettuce:
+      pool:
+        max-active: 8  
+        max-wait: -1  
+        max-idle: 8
+        min-idle: 0  
+    host: localhost
+    port: 6379
+    password: 
+    timeout: 0
+    
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        #采用手动应答
+        acknowledge-mode: manual
+        #当前监听容器数
+        concurrency: 1
+        #最大数
+        max-concurrency: 1
+        prefetch: 15
+        #是否支持重试
+        retry:
+          enabled: true
+          #最大重试次数
+          max-attempts: 5
+      direct:
+        acknowledge-mode: manual
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+  security:
+    enabled: false
+
+#logback日志参数
+logback:
+  path: ../logs
+  zip.path: ../logs/zip
+  maxFileSize: 10MB
+  maxHistory: 15
+  totalSizeCap: 1000MB
+  level: INFO
+  
+http:
+  # 连接池最大连接数 
+  maxTotal: 100
+  # 并发数
+  defaultMaxPerRoute: 20
+  # 连接超时时间，单位ms
+  connectTimeout: 1000
+  # 从连接池获取连接的最长时间 ms
+  connectionRequestTimeout: 500
+  # 数据传输最长时间 ms
+  socketTimeout: 10000
+  # 提交请求前测试连接是否可用
+  staleConnectionCheckEnabled: true
+  # 连接保持时间 ms
+  keepAliveTimeout: 5000
+  # 空闲时间回收连接 s
+  idleTimeout: 30
+  
+#线程池配置
+threadpool:
+  core-pool-size: 2
+  max-pool-size: 100
+  queue-capacity: 1000
+  keep-alive-seconds: 300
