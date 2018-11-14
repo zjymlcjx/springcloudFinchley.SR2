@@ -50,6 +50,10 @@ spring:
         - Path=/springboot-service/**
         filters:
         - StripPrefix=1
+        - name: Hystrix
+          args:
+            name: authHystrixCommand
+            fallbackUri: forward:/hystrixTimeout
       - id: test-http
         uri: http://www.baidu.com
         predicates:
@@ -57,7 +61,18 @@ spring:
         filters:
         - StripPrefix=1
           
-          
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000        
+            
+ribbon:
+  ReadTimeout: 2000
+  ConnectTimeout: 2000
+
         
 eureka:
   instance:
