@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.gateway.filter.CustomLocalFilters;
+import com.example.gateway.filter.CustomLocalGatewayFilter;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -25,7 +25,7 @@ public class GatewayApplication {
 		return builder.routes()
 				.route(p -> p.path("/spring/**")
 						.filters(fn -> fn.stripPrefix(1).addRequestHeader("token", "111111")
-								.addResponseHeader("hello", "word").filter(new CustomLocalFilters()))
+								.addResponseHeader("hello", "word").filter(new CustomLocalGatewayFilter()))
 						.uri("lb://SPRINGBOOT-SERVICE"))
 				.build();
 	}
@@ -34,15 +34,15 @@ public class GatewayApplication {
 	public RouteLocator hystrixRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route(p -> p.path("/hystrix/**")
-						.filters(fn -> fn.stripPrefix(1).hystrix(c -> c.setName("authHystrixCommand").setFallbackUri("forward:/hystrixTimeout")))
+						.filters(fn -> fn.stripPrefix(1).hystrix(c -> c.setName("hystrixCommand").setFallbackUri("forward:/fallback")))
 						.uri("lb://SPRINGBOOT-SERVICE"))
 				.build();
 	}
 	
-	@GetMapping("/fallback")
-    public String hystrixTimeout() throws InterruptedException {
-        System.out.println("hystrixTimeout触发了断路由！");
-        return "hystrixTimeout触发了断路由！";
+	@RequestMapping("/fallback")
+    public String fallback() throws InterruptedException {
+        System.out.println("this is fallback");
+        return "this is fallback";
     }
 
 

@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
  * @author zjy
  *
  */
-public class CustomLocalFilters implements GatewayFilter, Ordered {
+public class CustomLocalGatewayFilter implements GatewayFilter, Ordered {
 
 	@Override
 	public int getOrder() {

@@ -3,6 +3,7 @@ package com.haobai.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,9 @@ public class TestController {
 	@HystrixCommand(commandKey="authHystrixCommand")
 	public User test3(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws InterruptedException {
 		Thread.sleep(3000);
-		System.out.println(request.getHeader("token"));
+		if(StringUtils.isNotEmpty(request.getHeader("token"))) {
+			System.out.println(request.getHeader("token"));
+		}
 		response.setHeader("hello", "world1");
 		return user;
 		

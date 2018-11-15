@@ -8,6 +8,8 @@ spring:
       discovery:
         locator:
           enabled: true
+                               #服务名忽略大小写
+          lower-case-service-id: true
 
 ---
 spring:
@@ -44,11 +46,18 @@ spring:
 #        - SetStatus=401 (It must be a valid Spring HttpStatus)
 #        - StripPrefix=2
 #        - Retry
+      - id: test-lower-case-service-id
+        uri: lb://springboot-service
+        predicates:
+        - Path=/lower-case/**
+        filters:
+        - StripPrefix=1
       - id: test-ribbon
         uri: lb://SPRINGBOOT-SERVICE
         predicates:
-        - Path=/springboot-service/**
+        - Path=/springboot/**
         filters:
+        - CustomLocal=true
         - StripPrefix=1
         - name: Hystrix
           args:
@@ -63,15 +72,15 @@ spring:
           
 hystrix:
   command:
-    default:
+    authHystrixCommand:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 3000        
+            timeoutInMilliseconds: 30000        
             
-ribbon:
-  ReadTimeout: 2000
-  ConnectTimeout: 2000
+#ribbon:
+#  ReadTimeout: 2000
+#  ConnectTimeout: 2000
 
         
 eureka:

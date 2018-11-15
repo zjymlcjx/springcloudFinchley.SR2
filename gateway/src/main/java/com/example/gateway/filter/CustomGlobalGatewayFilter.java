@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
  * @author ZJY
  *
  */
-public class CustomGlobalFilters implements GlobalFilter, Ordered {
+public class CustomGlobalGatewayFilter implements GlobalFilter, Ordered {
 
 	@Override
 	public int getOrder() {
