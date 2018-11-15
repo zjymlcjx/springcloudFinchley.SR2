@@ -21,7 +21,7 @@ public class GatewayApplication {
 	}
 
 	@Bean
-	public RouteLocator myRoutes(RouteLocatorBuilder builder) {
+	public RouteLocator MyRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route(p -> p.path("/spring/**")
 						.filters(fn -> fn.stripPrefix(1).addRequestHeader("token", "111111")

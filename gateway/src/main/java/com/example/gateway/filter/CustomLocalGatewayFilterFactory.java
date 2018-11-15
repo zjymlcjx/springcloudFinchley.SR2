@@ -50,7 +50,6 @@ public class CustomLocalGatewayFilterFactory extends AbstractGatewayFilterFactor
 							.append(costTime).append("ms");
 					if (config.getActive()) {
 						exchange.getResponse().getHeaders().set("request-cost-time", String.valueOf(costTime));
-						;
 						log.info(sb.toString());
 					}
 				}

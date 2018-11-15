@@ -5,8 +5,10 @@ import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.support.DefaultServerRequest;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -14,13 +16,14 @@ import org.springframework.core.io.buffer.NettyDataBufferFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
 import io.netty.buffer.ByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 自定义局部过滤器
+ * 自定义局部过滤器,作用于单个路由或者一组路由
  * 
  * @author zjy
  *
@@ -35,6 +38,7 @@ public class CustomLocalGatewayFilter implements GatewayFilter, Ordered {
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		ServerRequest serverRequest = new DefaultServerRequest(exchange);
 		ServerHttpRequest request = exchange.getRequest();
 		ServerHttpResponse reponse = exchange.getResponse();
 		String requestParam = null;
@@ -55,6 +59,7 @@ public class CustomLocalGatewayFilter implements GatewayFilter, Ordered {
 			 */
 			requestParam = DataBuffer2String(body);
 			System.out.println("post请求参数：" + requestParam);
+			break;
 
 		default:
 			break;
@@ -64,14 +69,16 @@ public class CustomLocalGatewayFilter implements GatewayFilter, Ordered {
 		// body,而request body只能读取一次。
 		URI uri = request.getURI();
         ServerHttpRequest req = request.mutate().uri(uri).build();
-        DataBuffer bodyDataBuffer = stringBuffer(requestParam);
-        Flux<DataBuffer> bodyFlux = Flux.just(bodyDataBuffer);
-        req = new ServerHttpRequestDecorator(request) {
-            @Override
-            public Flux<DataBuffer> getBody() {
-                return bodyFlux;
-            }
-        };
+        if(StringUtils.isNotEmpty(requestParam)){
+        	DataBuffer bodyDataBuffer = stringBuffer(requestParam);
+        	Flux<DataBuffer> bodyFlux = Flux.just(bodyDataBuffer);
+        	req = new ServerHttpRequestDecorator(request) {
+        		@Override
+        		public Flux<DataBuffer> getBody() {
+        			return bodyFlux;
+        		}
+        	};
+        }
 		return chain.filter(exchange.mutate().request(req).build()).then(Mono.fromRunnable(() -> {
 			reponse.getHeaders().set("post", "reponse");
 		}));
