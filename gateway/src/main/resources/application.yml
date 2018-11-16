@@ -17,6 +17,8 @@ spring:
     gateway:
       default-filters:
       - CustomLocal=true  #应用于每个路由的过滤器列表，但是只试用于下面的filters，java配置无效
+                  #限流放在default-filters报错找不到   No Configuration found for route test-ribbon
+#      - name: RequestRateLimiter
       routes:
 #      - id: practice
 #        uri: http://www.baidu.com
@@ -59,6 +61,13 @@ spring:
         predicates:
         - Path=/springboot/**
         filters:
+        - name: RequestRateLimiter
+          args:
+            key-resolver: "#{@userKeyResolver}"
+                                    #是您希望允许用户每秒执行多少请求，而不会丢弃任何请求。这是令牌桶填充的速率。
+            redis-rate-limiter.replenishRate: 1
+                                    #是用户在一秒钟内允许执行的最大请求数。这是令牌桶可以容纳的令牌数。将此值设置为零将阻止所有请求。
+            redis-rate-limiter.burstCapacity: 2
         - StripPrefix=1
         - name: Hystrix
           args:
