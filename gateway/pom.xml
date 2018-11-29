@@ -48,6 +48,12 @@
 		</dependency>
 		<!-- spring boot end -->
 
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>5.0</version>
+		</dependency>
+
 		<!-- spring cloud start -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -75,6 +81,16 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
+		<!-- 仅用sleuth -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-sleuth</artifactId> 
+			</dependency> -->
+		<!-- 使用zipkin 去掉spring-cloud-starter-sleuth -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+		<!-- <dependency> <groupId>org.springframework.amqp</groupId> <artifactId>spring-rabbit</artifactId> 
+			</dependency> -->
 		<!-- spring cloud end -->
 
 	</dependencies>

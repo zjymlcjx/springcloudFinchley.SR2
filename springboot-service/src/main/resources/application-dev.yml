@@ -2,8 +2,13 @@
 server: 
   port: 1111
 spring: 
+  zipkin:
+    base-url: http://localhost:9411
   application: 
     name: springboot-service
+  sleuth:
+    sampler:
+      probability: 1.0
   jpa: 
     show-sql: true
   datasource: 
@@ -60,29 +65,20 @@ eureka:
     service-url:
       defaultZone: http://localhost:2000/eureka/ #,http://localhost:3000/eureka/
    
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    shutdown:
-      enabled: true
-  security:
-    enabled: false
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    shutdown:
+#      enabled: true
+#  security:
+#    enabled: false
 
-logging:
-  config: "classpath:log.xml"
+#logging:
+#  config: "classpath:log.xml"
 
-#logback日志参数
-logback:
-  path: ../logs
-  zip.path: ../logs/zip
-  maxFileSize: 10MB
-  maxHistory: 15
-  totalSizeCap: 1000MB
-  level: INFO
-  
 http:
   # 连接池最大连接数 
   maxTotal: 100

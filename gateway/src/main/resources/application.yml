@@ -13,6 +13,11 @@ spring:
 
 ---
 spring:
+#  zipkin:
+#    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
   cloud:
     gateway:
       default-filters:
@@ -56,6 +61,10 @@ spring:
         - Path=/lower-case/**
         filters:
         - StripPrefix=1
+        - name: Hystrix
+          args:
+            name: authHystrixCommand
+            fallbackUri: forward:localhost:1111/hystrixTimeout
       - id: test-ribbon
         uri: lb://SPRINGBOOT-SERVICE
         predicates:
@@ -79,14 +88,30 @@ spring:
         - Path=/forward/**
         filters:
         - StripPrefix=1
+      - id: test-hystrix
+        uri: http://www.baidu.com
+        predicates:
+        - Path=/testHystrix/**
+        filters:
+        - StripPrefix=1
+        - name: Hystrix
+          args:
+            name: testHystrix
+            fallbackUri: forward:/fallback
           
 hystrix:
   command:
+    hystrixCommand:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
     authHystrixCommand:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 30000        
+            timeoutInMilliseconds: 3000    
+    
             
 #ribbon:
 #  ReadTimeout: 2000
@@ -101,5 +126,7 @@ eureka:
     service-url:
       defaultZone: http://localhost:2000/eureka/
 logging:
+#  config: "classpath:logback-spring.xml" 
   level:
+    org.springframework.web.servlet.DispatcherServlet: debug
     org.springframework.cloud.gateway: debug

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: gateway
+#logback日志参数
+logback:
+  path: ../logs
+  zip.path: ../logs/zip
+  maxFileSize: 10MB
+  maxHistory: 15
+  totalSizeCap: 1000MB
+  level: INFO

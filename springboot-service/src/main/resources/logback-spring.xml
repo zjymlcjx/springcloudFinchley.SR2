@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration scan="true" scanPeriod="30 seconds">
+	<include
+		resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<springProperty scope="context" name="springAppName"
+		source="spring.application.name" />
+	<springProperty scope="context" name="logback.path"
+		source="logback.path" />
+	<springProperty scope="context" name="logback.zip.path"
+		source="logback.zip.path" />
+	<springProperty scope="context"
+		name="logback.maxFileSize" source="logback.maxFileSize" />
+	<springProperty scope="context"
+		name="logback.totalSizeCap" source="logback.totalSizeCap" />
+	<springProperty scope="context"
+		name="logback.maxHistory" source="logback.maxHistory" />
+	<springProperty scope="context" name="logback.level"
+		source="logback.level" />
+	<property name="CONSOLE_LOG_PATTERN"
+		value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
+	<!-- 控制台日志配置 -->
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+		<!-- <encoder> 格式化 <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c{36} - 
+			%m%n</pattern> </encoder> -->
+	</appender>
+
+	<!-- info级别日志控制 -->
+	<appender name="FILE_INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 文件路径 -->
+		<file>${logback.path}/info.log</file>
+		<!-- 是否追加 默认为true -->
+		<append>true</append>
+		<!-- 滚动策略 日期+大小 策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logback.zip.path}/%d{yyyy-MM-dd}/info/info-%i.zip</fileNamePattern>
+			<!-- 单个日志大小 -->
+			<maxFileSize>${logback.maxFileSize}</maxFileSize>
+			<!-- 日志保存周期 -->
+			<maxHistory>${logback.maxHistory}</maxHistory>
+			<!-- 总大小 -->
+			<totalSizeCap>${logback.totalSizeCap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+		<!-- 格式化 -->
+		<!-- <encoder> <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c{36} - %m%n</pattern> 
+			</encoder> -->
+		<!-- 级别过滤 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<!-- warn级别日志控制 -->
+	<appender name="WARN_INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 文件路径 -->
+		<file>${logback.path}/warn.log</file>
+		<!-- 是否追加 默认为true -->
+		<append>true</append>
+		<!-- 滚动策略 日期+大小 策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logback.zip.path}/%d{yyyy-MM-dd}/warn/warn-%i.zip</fileNamePattern>
+			<!-- 单个日志大小 -->
+			<maxFileSize>${logback.maxFileSize}</maxFileSize>
+			<!-- 日志保存周期 -->
+			<maxHistory>${logback.maxHistory}</maxHistory>
+			<!-- 总大小 -->
+			<totalSizeCap>${logback.totalSizeCap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+		<!-- 格式化 -->
+		<!-- <encoder> <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c{36} - %m%n</pattern> 
+			</encoder> -->
+		<!-- 级别过滤 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<!-- ERROR级别日志控制 -->
+	<appender name="ERROR_INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 文件路径 -->
+		<file>${logback.path}/error.log</file>
+		<!-- 是否追加 默认为true -->
+		<append>true</append>
+		<!-- 滚动策略 日期+大小 策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logback.zip.path}/%d{yyyy-MM-dd}/error/error-%i.zip</fileNamePattern>
+			<!-- 单个日志大小 -->
+			<maxFileSize>${logback.maxFileSize}</maxFileSize>
+			<!-- 日志保存周期 -->
+			<maxHistory>${logback.maxHistory}</maxHistory>
+			<!-- 总大小 -->
+			<totalSizeCap>${logback.totalSizeCap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+		<!-- 格式化 -->
+		<!-- <encoder> <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c{36} - %m%n</pattern> 
+			</encoder> -->
+		<!-- 级别过滤 -->
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<!-- Appender to log to file in a JSON format -->
+	<appender name="LOGSTASH_INFO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${logback.path}/json.log</file>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${logback.zip.path}/%d{yyyy-MM-dd}/json/json-%i.zip</fileNamePattern>
+			<!-- 单个日志大小 -->
+			<maxFileSize>${logback.maxFileSize}</maxFileSize>
+			<!-- 日志保存周期 -->
+			<maxHistory>${logback.maxHistory}</maxHistory>
+			<!-- 总大小 -->
+			<totalSizeCap>${logback.totalSizeCap}</totalSizeCap>
+		</rollingPolicy>
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<timestamp>
+					<timeZone>UTC</timeZone>
+				</timestamp>
+				<pattern>
+					<pattern>
+						{
+						"severity": "%level",
+						"service": "${springAppName:-}",
+						"trace": "%X{X-B3-TraceId:-}",
+						"span": "%X{X-B3-SpanId:-}",
+						"parent": "%X{X-B3-ParentSpanId:-}",
+						"exportable":
+						"%X{X-Span-Export:-}",
+						"pid": "${PID:-}",
+						"thread": "%thread",
+						"class": "%logger{40}",
+						"rest": "%message"
+						}
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+	</appender>
+
+	<root level="${logback.level}">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE_INFO" />
+		<appender-ref ref="WARN_INFO" />
+		<appender-ref ref="ERROR_INFO" />
+		<appender-ref ref="LOGSTASH_INFO" />
+	</root>
+
+	<!--日志异步到数据库 -->
+	<!--<appender name="DB" class="ch.qos.logback.classic.db.DBAppender"> -->
+	<!--&lt;!&ndash;日志异步到数据库 &ndash;&gt; -->
+	<!--<connectionSource class="ch.qos.logback.core.db.DriverManagerConnectionSource"> -->
+	<!--&lt;!&ndash;连接池 &ndash;&gt; -->
+	<!--<dataSource class="com.mchange.v2.c3p0.ComboPooledDataSource"> -->
+	<!--<driverClass>com.mysql.jdbc.Driver</driverClass> -->
+	<!--<url>jdbc:mysql://127.0.0.1:3306/databaseName</url> -->
+	<!--<user>root</user> -->
+	<!--<password>root</password> -->
+	<!--</dataSource> -->
+	<!--</connectionSource> -->
+	<!--</appender> -->
+</configuration>
